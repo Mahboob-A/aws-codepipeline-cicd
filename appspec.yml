@@ -1,0 +1,24 @@
+version: 0.0
+os: linux
+files:
+  - source: /
+    destination: /home/ec2-user/todo-app
+    overwrite: yes
+permissions:
+  - object: /home/ec2-user/todo-app/deploy/production/scripts
+    pattern: "**"
+    owner: ec2-user
+    group: ec2-user
+    mode: 755
+hooks:
+  BeforeInstall:
+    - location: deploy/production/scripts/install_dependencies.sh
+      timeout: 300
+      runas: ec2-user
+  ApplicationStart:
+    - location: deploy/production/scripts/deploy.sh
+      timeout: 600
+      runas: ec2-user
+      env:
+        AWS_DEFAULT_REGION: us-east-1
+        AWS_ACCOUNT_ID: "123456789012"
