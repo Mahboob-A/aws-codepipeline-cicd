@@ -1,24 +1,26 @@
 version: 0.0
 os: linux
 files:
-  - source: /
-    destination: /home/ec2-user/todo-app
-    overwrite: yes
-permissions:
-  - object: /home/ec2-user/todo-app/deploy/production/scripts
-    pattern: "**"
-    owner: ec2-user
-    group: ec2-user
-    mode: 755
+  - source: imagedefinitions.json
+    destination: /home/ubuntu/app-deploy
+
 hooks:
-  BeforeInstall:
-    - location: deploy/production/scripts/install_dependencies.sh
+  ApplicationStop:
+    - location: deploy/production/scripts/stop_application.sh
       timeout: 300
-      runas: ec2-user
+      runas: ubuntu
+
+  DownloadBundle:
+    - location: deploy/production/scripts/download_bundle.sh
+      timeout: 300
+      runas: ubuntu
+
   ApplicationStart:
-    - location: deploy/production/scripts/deploy.sh
-      timeout: 600
-      runas: ec2-user
-      env:
-        AWS_DEFAULT_REGION: us-east-1
-        AWS_ACCOUNT_ID: "123456789012"
+    - location: deploy/production/scripts/start_application.sh
+      timeout: 300
+      runas: ubuntu
+
+  ValidateService:
+    - location: deploy/production/scripts/validate_service.sh
+      timeout: 300
+      runas: ubuntu

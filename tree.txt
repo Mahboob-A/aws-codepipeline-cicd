@@ -1,0 +1,37 @@
+codepipeline_django
+├── appspec.yml
+├── buildspec.yml
+├── codepipeline_django
+│   ├── asgi.py
+│   ├── __init__.py
+│   ├── settings.py
+│   ├── urls.py
+│   └── wsgi.py
+├── deploy
+│   ├── develop
+│   │   ├── aws
+│   │   ├── docker
+│   │   │   └── Dockerfile
+│   │   └── scripts
+│   └── production
+│       ├── aws
+│       ├── docker
+│       │   └── Dockerfile
+│       └── scripts
+├── dev.yml
+├── Makefile
+├── manage.py
+├── prod.yml
+├── pyproject.toml
+├── README.md
+├── todo_app
+│   ├── admin.py
+│   ├── apps.py
+│   ├── __init__.py
+│   ├── migrations
+│   │   └── __init__.py
+│   ├── models.py
+│   ├── tests.py
+│   ├── urls.py
+│   └── views.py
+└── uv.lock

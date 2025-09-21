@@ -18,6 +18,6 @@ COPY . .
 
 RUN uv run python manage.py collectstatic --noinput
 
-EXPOSE 8000
+EXPOSE 8001
 
-CMD ["uv", "run", "python", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["uv", "run", "gunicorn", "--bind", "0.0.0.0:8001", "--workers", "3", "codepipeline_django.wsgi:application"]

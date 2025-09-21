@@ -16,23 +16,35 @@ services:
       timeout: 20s
       retries: 10
     restart: unless-stopped
+    networks:
+      - production-todo-app-network
 
-  web:
-    image: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/todo-app:latest
+  api:
+    image: 031988646265.dkr.ecr.us-east-1.amazonaws.com/todo-app:${IMAGE_TAG}
     container_name: todo_django_prod
-    ports:
-      - "8000:8000"
+    expose:
+      - "8001"
+    volumes:
+      - static_volume_prod:/app/staticfiles
     environment:
-      - DEBUG=False
-      - DB_HOST=db
-      - DB_NAME=todo_db
-      - DB_USER=todo_user
-      - DB_PASSWORD=todo_password
-      - DB_PORT=3306
+      DEBUG: "False"
+      DB_HOST: db
+      DB_NAME: todo_db
+      DB_USER: todo_user
+      DB_PASSWORD: todo_password
+      DB_PORT: 3306
+      SECRET_KEY: "django-insecure-3$=+*n%sr4$=+wv32nbh5)-vkzu1bg7f7d%^ndvz5_wz13mis0"
     depends_on:
       db:
         condition: service_healthy
     restart: unless-stopped
+    networks:
+      - production-todo-app-network
+
+networks:
+  production-todo-app-network:
+    external: true
 
 volumes:
   mysql_data_prod:
+  static_volume_prod:
